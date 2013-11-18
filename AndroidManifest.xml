@@ -77,6 +77,12 @@
             android:requiredForAllUsers="true"
             android:supportsRtl="true">
 
+	<receiver android:name=".mahdi.LockscreenInterface$DeviceAdminLockscreenReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_lockscreen" />
+        </receiver>
+
         <!-- Settings -->
 
         <activity android:name="Settings"
@@ -1823,7 +1829,7 @@
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.mahdi.LockscreenInterface" />
-        </activity>
+        </activity>	 
 
         <!-- Mahdi-Rom activities End -->
 

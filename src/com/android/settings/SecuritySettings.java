@@ -70,8 +70,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private static final String KEY_SECURITY_CATEGORY = "security_category";
     private static final String KEY_DEVICE_ADMIN_CATEGORY = "device_admin_category";
     private static final String KEY_LOCK_AFTER_TIMEOUT = "lock_after_timeout";
-    private static final String KEY_OWNER_INFO_SETTINGS = "owner_info_settings";
-    private static final String KEY_ENABLE_WIDGETS = "keyguard_enable_widgets";
+    private static final String KEY_OWNER_INFO_SETTINGS = "owner_info_settings";    
     private static final String PREF_LOCK_SCREEN = "lock_screen_settings";
 
     private static final int SET_OR_CHANGE_LOCK_METHOD_REQUEST = 123;
@@ -114,8 +113,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
     private CheckBoxPreference mToggleAppInstallation;
     private DialogInterface mWarnInstallApps;
     private CheckBoxPreference mToggleVerifyApps;
-    private CheckBoxPreference mPowerButtonInstantlyLocks;
-    private CheckBoxPreference mEnableKeyguardWidgets;
+    private CheckBoxPreference mPowerButtonInstantlyLocks;    
 
     private Preference mNotificationAccess;
 
@@ -296,31 +294,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
                                  TelephonyManager.SIM_STATE_UNKNOWN)) {
                 root.findPreference(KEY_SIM_LOCK).setEnabled(false);
             }
-        }
-
-        // Enable or disable keyguard widget checkbox based on DPM state
-        mEnableKeyguardWidgets = (CheckBoxPreference) root.findPreference(KEY_ENABLE_WIDGETS);
-        if (mEnableKeyguardWidgets != null) {
-            if (ActivityManager.isLowRamDeviceStatic()) {
-                // Widgets take a lot of RAM, so disable them on low-memory devices
-                PreferenceGroup securityCategory
-                        = (PreferenceGroup) root.findPreference(KEY_SECURITY_CATEGORY);
-                if (securityCategory != null) {
-                    securityCategory.removePreference(root.findPreference(KEY_ENABLE_WIDGETS));
-                    mEnableKeyguardWidgets = null;
-                }
-            } else {
-                final boolean disabled = (0 != (mDPM.getKeyguardDisabledFeatures(null)
-                        & DevicePolicyManager.KEYGUARD_DISABLE_WIDGETS_ALL));
-                if (disabled) {
-                    mEnableKeyguardWidgets.setSummary(
-                            R.string.security_enable_widgets_disabled_summary);
-                } else {
-                    mEnableKeyguardWidgets.setSummary("");
-                }
-                mEnableKeyguardWidgets.setEnabled(!disabled);
-            }
-        }
+        }        
 
         // Show password
         mShowPassword = (CheckBoxPreference) root.findPreference(KEY_SHOW_PASSWORD);
@@ -569,11 +543,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
 
         if (mResetCredentials != null) {
             mResetCredentials.setEnabled(!mKeyStore.isEmpty());
-        }
-
-        if (mEnableKeyguardWidgets != null) {
-            mEnableKeyguardWidgets.setChecked(lockPatternUtils.getWidgetsEnabled());
-        }
+        }        
 
         updateBlacklistSummary();
     }
@@ -628,9 +598,7 @@ public class SecuritySettings extends RestrictedSettingsFragment
             lockPatternUtils.setPowerButtonInstantlyLocks(isToggled(preference));
 	} else if (preference == mLockBeforeUnlock) {
             Settings.Secure.putInt(getActivity().getApplicationContext().getContentResolver(),
-                    Settings.Secure.LOCK_BEFORE_UNLOCK, isToggled(preference) ? 1 : 0);
-        } else if (KEY_ENABLE_WIDGETS.equals(key)) {
-            lockPatternUtils.setWidgetsEnabled(mEnableKeyguardWidgets.isChecked());
+                    Settings.Secure.LOCK_BEFORE_UNLOCK, isToggled(preference) ? 1 : 0);       
         } else if (preference == mShowPassword) {
             Settings.System.putInt(getContentResolver(), Settings.System.TEXT_SHOW_PASSWORD,
                     mShowPassword.isChecked() ? 1 : 0);

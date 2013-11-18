@@ -15,16 +15,24 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
-    android:title="@string/lock_screen_title" >
+    android:title="@string/lock_screen_title" >        
 
-        <PreferenceScreen
-            android:key="screen_security"
-            android:fragment="com.android.settings.SecuritySettings"
-            android:title="@string/screen_security_category"
-            android:summary="@string/screen_security_summary">             
-        </PreferenceScreen>
+    <PreferenceCategory
+        android:title="@string/lockscreen_widgets_category_title"
+        android:key="lockscreen_widgets_category" >
 
-	<CheckBoxPreference
+        <com.android.settings.mahdi.SystemSettingCheckBoxPreference
+            android:key="lockscreen_maximize_widgets"
+            android:summary="@string/lockscreen_maximize_widgets_summary"
+            android:title="@string/lockscreen_maximize_widgets_title" />
+
+        <CheckBoxPreference
+            android:key="keyguard_enable_widgets"
+            android:title="@string/lockscreen_enable_widgets_title" />
+
+    </PreferenceCategory>
+
+	<com.android.settings.mahdi.SystemSettingCheckBoxPreference
             android:key="battery_around_lockscreen_ring"
             android:title="@string/battery_around_lockscreen_ring"
       	    android:summary="@string/battery_around_lockscreen_ring_summary"
